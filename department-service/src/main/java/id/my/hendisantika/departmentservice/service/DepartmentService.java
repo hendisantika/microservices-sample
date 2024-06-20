@@ -1,5 +1,7 @@
 package id.my.hendisantika.departmentservice.service;
 
+import id.my.hendisantika.departmentservice.dto.DepartmentDto;
+import id.my.hendisantika.departmentservice.entity.Department;
 import id.my.hendisantika.departmentservice.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,4 +26,11 @@ public class DepartmentService {
 
     private final ModelMapper modelMapper;
 
+    public DepartmentDto savDepartment(DepartmentDto departmentDto) {
+        Department department = modelMapper.map(departmentDto, Department.class);
+        // Save Department
+        department = departmentRepository.save(department);
+
+        return departmentDto;
+    }
 }
