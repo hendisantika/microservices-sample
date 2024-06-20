@@ -1,10 +1,15 @@
 package id.my.hendisantika.employeeservice.controller;
 
+import id.my.hendisantika.employeeservice.dto.EmployeeDto;
 import id.my.hendisantika.employeeservice.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +36,14 @@ public class EmployeeController {
     @GetMapping("/message")
     public String message() {
         return message;
+    }
+
+    // Build Save Employee Rest API Endpoint
+    @PostMapping
+    public ResponseEntity<EmployeeDto> savEmployee(@RequestBody EmployeeDto employeeDto) {
+        EmployeeDto savEmployee = employeeService.saveEmployee(employeeDto);
+
+        return new ResponseEntity<>(savEmployee, HttpStatus.CREATED);
     }
 
 }
