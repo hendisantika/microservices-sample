@@ -1,6 +1,8 @@
 package id.my.hendisantika.employeeservice.service;
 
+import id.my.hendisantika.employeeservice.dto.DepartmentDto;
 import id.my.hendisantika.employeeservice.dto.EmployeeDto;
+import id.my.hendisantika.employeeservice.dto.EmployeeResponse;
 import id.my.hendisantika.employeeservice.entity.Employee;
 import id.my.hendisantika.employeeservice.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +44,36 @@ public class EmployeeService {
         employeeRepository.save(employee);
 
         return employeeDto;
+    }
+
+    public EmployeeResponse getEmployeeById(Long id) {
+        // Get employee by ID
+        Employee employee = employeeRepository.findById(id).get();
+
+        // Map Employee entity to EmployeeDto
+        EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
+
+        // // Call department microservice by RestTemplate
+        // ResponseEntity<DepartmentDto> responseEntity =  restTemplate.getForEntity("http://localhost:8080/api/departments/" + employeeDto.getDepartmentCode(), DepartmentDto.class);
+        // DepartmentDto departmentDto = responseEntity.getBody();
+
+
+        // Call department microservice by WebClient
+        // DepartmentDto departmentDto =  webClient.get()
+        //                                     .uri("http://localhost:8080/api/departments/" + employeeDto.getDepartmentCode())
+        //                                     .retrieve()
+        //                                     .bodyToMono(DepartmentDto.class)
+        //                                     .block();
+
+        // Call department microservice by Spring Cloud OpenFeign
+        DepartmentDto departmentDto = apiClient.getDepartmentByCode(employeeDto.getDepartmentCode());
+
+
+        // Prepare employee response
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setEmployeeDto(employeeDto);
+        employeeResponse.setDepartmentDto(departmentDto);
+
+        return employeeResponse;
     }
 }
