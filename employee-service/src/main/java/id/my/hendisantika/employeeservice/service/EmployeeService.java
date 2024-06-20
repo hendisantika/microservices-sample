@@ -1,5 +1,7 @@
 package id.my.hendisantika.employeeservice.service;
 
+import id.my.hendisantika.employeeservice.dto.EmployeeDto;
+import id.my.hendisantika.employeeservice.entity.Employee;
 import id.my.hendisantika.employeeservice.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,4 +33,14 @@ public class EmployeeService {
     private final WebClient webClient;
 
     private final APIClient apiClient;
+
+    public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
+        // Convert EmployeeDto to Employee Entity
+        Employee employee = modelMapper.map(employeeDto, Employee.class);
+
+        // Save Employee
+        employeeRepository.save(employee);
+
+        return employeeDto;
+    }
 }
