@@ -33,4 +33,14 @@ public class DepartmentService {
 
         return departmentDto;
     }
+
+    public DepartmentDto findByDepartmentCode(String code) {
+        // Find Department By Code
+        Department department = departmentRepository.findByDepartmentCode(code);
+
+        // Map Department entity to DepartmentDto
+        DepartmentDto departmentDto = modelMapper.map(department, DepartmentDto.class);
+
+        return departmentDto;
+    }
 }
